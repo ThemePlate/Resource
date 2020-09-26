@@ -41,9 +41,11 @@ class Resource {
 
 		foreach ( self::$storage['handles'] as $directive => $handles ) {
 			foreach ( $handles as $handle ) {
-				$item = self::$handles[ $handle ];
+				if ( empty( self::$handles[ $handle ] ) ) {
+					continue;
+				}
 
-				$item['rel'] = $directive;
+				$item = array( 'rel' => $directive ) + self::$handles[ $handle ];
 
 				self::insert( $item );
 			}
@@ -65,8 +67,8 @@ class Resource {
 
 			foreach ( $dependencies->registered as $dependency ) {
 				self::$handles[ $dependency->handle ] = array(
-					'as'   => strtolower( substr( $type, 3, -1 ) ),
 					'href' => $dependency->src,
+					'as'   => strtolower( substr( $type, 3, -1 ) ),
 				);
 			}
 		}
