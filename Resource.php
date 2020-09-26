@@ -15,22 +15,22 @@ class Resource {
 	private static $storage = array();
 
 
-	public static function hint( $directive, $url ) {
+	public static function hint( $directive, $resource ) {
 
-		$type = in_array( $directive, array( 'prefetch', 'preload' ), true ) ? 'handles' : 'urls';
+		$type = in_array( $directive, array( 'prefetch', 'preload' ), true ) ? 'handles' : 'resources';
 
-		self::$storage[ $type ][ $directive ][] = $url;
+		self::$storage[ $type ][ $directive ][] = $resource;
 
 	}
 
 
 	public static function init() {
 
-		foreach ( self::$storage['urls'] as $directive => $urls ) {
-			foreach ( $urls as $url ) {
+		foreach ( self::$storage['resources'] as $directive => $resources ) {
+			foreach ( $resources as $resource ) {
 				$item = array(
 					'rel'  => $directive,
-					'href' => $url,
+					'href' => $resource,
 				);
 
 				self::insert( $item );
@@ -41,11 +41,11 @@ class Resource {
 
 		foreach ( self::$storage['handles'] as $directive => $handles ) {
 			foreach ( $handles as $handle ) {
-				if ( empty( self::$handles[ $handle ] ) ) {
+				if ( self::check( $handle ) ) {
 					continue;
 				}
 
-				$item = array( 'rel' => $directive ) + self::$handles[ $handle ];
+				$item = array( 'rel' => $directive ) + $handle;
 
 				self::insert( $item );
 			}
@@ -72,6 +72,23 @@ class Resource {
 				);
 			}
 		}
+
+	}
+
+
+	private static function check( &$handle ) {
+
+		$retval = false;
+
+		if ( ! is_array( $handle ) ) {
+			$handle = self::$handles[ $handle ] ?? array();
+		}
+
+		if ( empty( $handle ) ) {
+			$retval = true;
+		}
+
+		return $retval;
 
 	}
 
