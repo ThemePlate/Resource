@@ -25,9 +25,35 @@ class Resource {
 
 		foreach ( self::$storage as $directive => $urls ) {
 			foreach ( $urls as $url ) {
-				echo "<link rel='{$directive}' href='{$url}' />\n";
+				$item = array(
+					'rel'  => $directive,
+					'href' => $url,
+				);
+
+				self::insert( $item );
 			}
 		}
+
+	}
+
+
+	private static function insert( $item ) {
+
+		$html = '';
+
+		foreach ( $item as $attr => $value ) {
+			$value = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+
+			if ( ! is_string( $attr ) ) {
+				$html .= " $value";
+			} else {
+				$html .= " $attr='$value'";
+			}
+		}
+
+		$html = trim( $html );
+
+		echo "<link $html />\n";
 
 	}
 
