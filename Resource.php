@@ -21,10 +21,27 @@ class Resource {
 
 		self::$storage[ $type ][ $directive ][] = $resource;
 
+		add_action( 'init', array( Resource::class, 'init' ) );
+
 	}
 
 
-	public static function init() {
+	public static function init( $priority ) {
+
+		if ( ! has_action( 'wp_head', array( Resource::class, 'action' ) ) ) {
+			self::prepare();
+
+			if ( ! $priority ) {
+				$priority = 2;
+			}
+
+			add_action( 'wp_head', array( Resource::class, 'action' ), $priority );
+		}
+
+	}
+
+
+	public static function action() {
 
 		foreach ( self::$storage['resources'] as $directive => $resources ) {
 			foreach ( $resources as $resource ) {
@@ -36,8 +53,6 @@ class Resource {
 				self::insert( $item );
 			}
 		}
-
-		self::prepare();
 
 		foreach ( self::$storage['handles'] as $directive => $handles ) {
 			foreach ( $handles as $handle ) {
