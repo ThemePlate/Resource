@@ -14,17 +14,19 @@ class Resource {
 	private static $storage = array();
 
 
-	public static function hint( $resource ) {
+	public static function hint( $directive, $url ) {
 
-		self::$storage[] = $resource;
+		self::$storage[ $directive ][] = $url;
 
 	}
 
 
 	public static function init() {
 
-		foreach ( self::$storage as $resource ) {
-			echo "<link rel='dns-prefetch' href='{$resource}' />\n";
+		foreach ( self::$storage as $directive => $urls ) {
+			foreach ( $urls as $url ) {
+				echo "<link rel='{$directive}' href='{$url}' />\n";
+			}
 		}
 
 	}
