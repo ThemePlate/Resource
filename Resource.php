@@ -11,19 +11,22 @@ namespace ThemePlate;
 
 class Resource {
 
+	private static $handles = array();
 	private static $storage = array();
 
 
 	public static function hint( $directive, $url ) {
 
-		self::$storage[ $directive ][] = $url;
+		$type = in_array( $directive, array( 'prefetch', 'preload' ), true ) ? 'handles' : 'urls';
+
+		self::$storage[ $type ][ $directive ][] = $url;
 
 	}
 
 
 	public static function init() {
 
-		foreach ( self::$storage as $directive => $urls ) {
+		foreach ( self::$storage['urls'] as $directive => $urls ) {
 			foreach ( $urls as $url ) {
 				$item = array(
 					'rel'  => $directive,
@@ -31,6 +34,40 @@ class Resource {
 				);
 
 				self::insert( $item );
+			}
+		}
+
+		self::prepare();
+
+		foreach ( self::$storage['handles'] as $directive => $handles ) {
+			foreach ( $handles as $handle ) {
+				$item = self::$handles[ $handle ];
+
+				$item['rel'] = $directive;
+
+				self::insert( $item );
+			}
+		}
+
+	}
+
+
+	private static function prepare() {
+
+		global $wp_scripts, $wp_styles;
+
+		foreach ( array( $wp_scripts, $wp_styles ) as $dependencies ) {
+			if ( empty( $dependencies->queue ) ) {
+				continue;
+			}
+
+			$type = get_class( $dependencies );
+
+			foreach ( $dependencies->registered as $dependency ) {
+				self::$handles[ $dependency->handle ] = array(
+					'as'   => strtolower( substr( $type, 3, -1 ) ),
+					'href' => $dependency->src,
+				);
 			}
 		}
 
