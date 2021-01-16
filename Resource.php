@@ -29,8 +29,6 @@ class Resource {
 	public static function init( $priority ) {
 
 		if ( ! has_action( 'wp_head', array( Resource::class, 'action' ) ) ) {
-			self::prepare();
-
 			if ( ! $priority ) {
 				$priority = 2;
 			}
@@ -42,6 +40,8 @@ class Resource {
 
 
 	public static function action() {
+
+		self::prepare();
 
 		foreach ( self::$storage['resources'] as $directive => $resources ) {
 			foreach ( $resources as $resource ) {
