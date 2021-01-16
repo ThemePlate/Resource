@@ -12,7 +12,10 @@ namespace ThemePlate;
 class Resource {
 
 	private static $handles = array();
-	private static $storage = array();
+	private static $storage = array(
+		'handles'   => array(),
+		'resources' => array(),
+	);
 
 
 	public static function hint( $directive, $resource ) {
