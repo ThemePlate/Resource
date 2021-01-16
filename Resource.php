@@ -24,7 +24,11 @@ class Resource {
 
 		self::$storage[ $type ][ $directive ][] = $resource;
 
-		add_action( 'init', array( Resource::class, 'init' ) );
+		if ( did_action( 'init' ) ) {
+			self::init( 2 );
+		} else {
+			add_action( 'init', array( Resource::class, 'init' ) );
+		}
 
 	}
 
