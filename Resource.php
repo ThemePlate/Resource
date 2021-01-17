@@ -27,7 +27,7 @@ class Resource {
 		if ( did_action( 'init' ) ) {
 			self::init( 2 );
 		} else {
-			add_action( 'init', array( Resource::class, 'init' ) );
+			add_action( 'init', array( __CLASS__, 'init' ) );
 		}
 
 	}
@@ -35,12 +35,12 @@ class Resource {
 
 	public static function init( $priority ) {
 
-		if ( ! has_action( 'wp_head', array( Resource::class, 'action' ) ) ) {
+		if ( ! has_action( 'wp_head', array( __CLASS__, 'action' ) ) ) {
 			if ( ! $priority ) {
 				$priority = 2;
 			}
 
-			add_action( 'wp_head', array( Resource::class, 'action' ), $priority );
+			add_action( 'wp_head', array( __CLASS__, 'action' ), $priority );
 		}
 
 	}
