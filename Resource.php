@@ -27,19 +27,19 @@ class Resource {
 		if ( did_action( 'init' ) ) {
 			self::init( 2 );
 		} else {
-			add_action( 'init', array( __CLASS__, 'init' ) );
+			add_action(
+				'init',
+				function () {
+					self::init( 2 );
+				}
+			);
 		}
-
 	}
 
 
 	public static function init( int $priority ): void {
 
 		if ( ! has_action( 'wp_head', array( __CLASS__, 'action' ) ) ) {
-			if ( ! $priority ) {
-				$priority = 2;
-			}
-
 			add_action( 'wp_head', array( __CLASS__, 'action' ), $priority );
 		}
 
