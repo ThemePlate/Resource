@@ -131,7 +131,7 @@ class Resource {
 
 		$html = trim( $html );
 
-		echo "<link $html />\n";
+		echo "<link $html />\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
 
