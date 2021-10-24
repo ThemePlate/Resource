@@ -11,14 +11,14 @@ namespace ThemePlate;
 
 class Resource {
 
-	private static $handles = array();
-	private static $storage = array(
+	private static array $handles = array();
+	private static array $storage = array(
 		'handles'   => array(),
 		'resources' => array(),
 	);
 
 
-	public static function hint( $directive, $resource ) {
+	public static function hint( string $directive, $resource ): void {
 
 		$type = in_array( $directive, array( 'prefetch', 'preload' ), true ) ? 'handles' : 'resources';
 
@@ -33,7 +33,7 @@ class Resource {
 	}
 
 
-	public static function init( $priority ) {
+	public static function init( int $priority ): void {
 
 		if ( ! has_action( 'wp_head', array( __CLASS__, 'action' ) ) ) {
 			if ( ! $priority ) {
@@ -46,7 +46,7 @@ class Resource {
 	}
 
 
-	public static function action() {
+	public static function action(): void {
 
 		self::prepare();
 
@@ -76,7 +76,7 @@ class Resource {
 	}
 
 
-	private static function prepare() {
+	private static function prepare(): void {
 
 		global $wp_scripts, $wp_styles;
 
@@ -98,7 +98,7 @@ class Resource {
 	}
 
 
-	private static function check( &$handle ) {
+	private static function check( &$handle ): bool {
 
 		$retval = false;
 
@@ -115,7 +115,7 @@ class Resource {
 	}
 
 
-	private static function insert( $item ) {
+	private static function insert( array $item ): void {
 
 		$html = '';
 
