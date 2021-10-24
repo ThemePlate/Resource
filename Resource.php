@@ -25,15 +25,18 @@ class Resource {
 		self::$storage[ $type ][ $directive ][] = $resource;
 
 		if ( did_action( 'init' ) ) {
-			self::init( 2 );
+			self::late_init();
 		} else {
-			add_action(
-				'init',
-				function () {
-					self::init( 2 );
-				}
-			);
+			add_action( 'init', array( __CLASS__, 'late_init' ) );
 		}
+
+	}
+
+
+	public static function late_init(): void {
+
+		self::init( 2 );
+
 	}
 
 
