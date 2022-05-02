@@ -5,6 +5,8 @@
 ```php
 use ThemePlate\Resource;
 
+add_action( 'init', array( Resource::class, 'init' ) );
+
 Resource::hint( 'dns-prefetch', '//cdnjs.cloudflare.com' );
 Resource::hint( 'preconnect', '//ajax.cloudflare.com' );
 Resource::hint( 'prerender', 'http://my.site/blog' );

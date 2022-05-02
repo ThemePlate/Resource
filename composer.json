@@ -1,19 +1,19 @@
 {
-    "name": "themeplate/resource",
-    "description" : "ThemePlate resource hinting",
-    "license": "GPL-3.0-only",
-    "authors": [
-        {
-            "name": "Gene Alyson Fortunado Torcende",
-            "email": "genealyson.torcende@gmail.com"
-        }
-    ],
-    "require": {
-        "php": "^7.4|^8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "ThemePlate\\": ""
-        }
-    }
+	"name": "themeplate/resource",
+	"description": "ThemePlate resource hinting",
+	"license": "GPL-3.0-only",
+	"authors": [
+		{
+			"name": "Gene Alyson Fortunado Torcende",
+			"email": "genealyson.torcende@gmail.com"
+		}
+	],
+	"require": {
+		"php": "^7.4|^8.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"ThemePlate\\": ""
+		}
+	}
 }

@@ -24,27 +24,12 @@ class Resource {
 
 		self::$storage[ $type ][ $directive ][] = $resource;
 
-		if ( did_action( 'init' ) ) {
-			self::late_init();
-		} else {
-			add_action( 'init', array( __CLASS__, 'late_init' ) );
-		}
-
 	}
 
 
-	public static function late_init(): void {
+	public static function init(): void {
 
-		self::init( 2 );
-
-	}
-
-
-	public static function init( int $priority ): void {
-
-		if ( ! has_action( 'wp_head', array( __CLASS__, 'action' ) ) ) {
-			add_action( 'wp_head', array( __CLASS__, 'action' ), $priority );
-		}
+		add_action( 'wp_head', array( __CLASS__, 'action' ), 2 );
 
 	}
 
