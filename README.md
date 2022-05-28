@@ -5,7 +5,7 @@
 ```php
 use ThemePlate\Resource;
 
-add_action( 'init', array( Resource::class, 'init' ) );
+add_action( 'wp_head', array( Resource::class, 'action' ), 2 );
 
 Resource::hint( 'dns-prefetch', '//cdnjs.cloudflare.com' );
 Resource::hint( 'preconnect', '//ajax.cloudflare.com' );
@@ -33,9 +33,3 @@ Resource::hint( 'preload', array(
 > - Custom *(array)*
 >   - `prefetch`
 >   - `preload`
-
----
-
-### Optional to specify the position of tags
-#### Resource::init( $priority )
-- **$priority** *(integer)(Required)*

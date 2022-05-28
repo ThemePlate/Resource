@@ -27,13 +27,6 @@ class Resource {
 	}
 
 
-	public static function init(): void {
-
-		add_action( 'wp_head', array( __CLASS__, 'action' ), 2 );
-
-	}
-
-
 	public static function action(): void {
 
 		self::prepare();
