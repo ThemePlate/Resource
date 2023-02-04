@@ -62,6 +62,10 @@ class ResourceTest extends WP_UnitTestCase {
 				'preload',
 				'jquery-core',
 			),
+			array(
+				'modulepreload',
+				'jquery-form', // only for test
+			),
 		);
 	}
 
@@ -77,7 +81,10 @@ class ResourceTest extends WP_UnitTestCase {
 		$actual = ob_get_clean();
 
 		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
-		$this->assertNotFalse( stripos( $actual, "as='script'/>" ) );
+
+		if ( in_array( $directive, array( 'preload', 'prefetch' ), true ) ) {
+			$this->assertNotFalse( stripos( $actual, "as='script'/>" ) );
+		}
 	}
 
 	public function test_hint_with_custom_array(): void {

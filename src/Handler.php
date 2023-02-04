@@ -62,7 +62,11 @@ class Handler {
 			foreach ( $this->{$type . 's'} as $handle => $directive ) {
 				if ( array_key_exists( $handle, $this->storage[ $type ] ) ) {
 					( new Item( $this->storage[ $type ][ $handle ], $directive ) )
-						->extra( array( 'as' => $type ) )
+						->extra(
+							array(
+								'as' => in_array( $directive, array( 'preload', 'prefetch' ), true ) ? $type : '',
+							)
+						)
 						->tag();
 				}
 			}
