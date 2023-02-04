@@ -13,12 +13,19 @@ class Item {
 
 	private array $attributes;
 
+	public const ATTRIBUTES = array(
+		'rel',
+		'href',
+		'as',
+		'type',
+	);
+
 
 	public function __construct( string $url, string $directive ) {
 
 		$this->attributes = array(
-			'href' => $url,
 			'rel'  => $directive,
+			'href' => $url,
 		);
 
 	}
@@ -26,7 +33,11 @@ class Item {
 
 	public function extra( array $attributes = array() ): self {
 
-		$this->attributes = array_merge( $attributes, $this->attributes );
+		$this->attributes = array_merge(
+			array_fill_keys( self::ATTRIBUTES, '' ),
+			$attributes,
+			$this->attributes
+		);
 
 		return $this;
 

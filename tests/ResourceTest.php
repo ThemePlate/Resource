@@ -49,8 +49,7 @@ class ResourceTest extends WP_UnitTestCase {
 		$actual   = ob_get_clean();
 		$resource = esc_url( $resource );
 
-		$this->assertNotFalse( stripos( $actual, "rel='$directive'" ) );
-		$this->assertNotFalse( stripos( $actual, "href='$resource'" ) );
+		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='$resource'/>" ) );
 	}
 
 	public function for_hint_with_known_handle(): array {
@@ -77,9 +76,8 @@ class ResourceTest extends WP_UnitTestCase {
 
 		$actual = ob_get_clean();
 
-		$this->assertNotFalse( stripos( $actual, "rel='$directive'" ) );
-		$this->assertNotFalse( stripos( $actual, "href='/wp-includes/js/jquery/" ) );
-		$this->assertNotFalse( stripos( $actual, "as='script'" ) );
+		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
+		$this->assertNotFalse( stripos( $actual, "as='script'/>" ) );
 	}
 
 	public function test_hint_with_custom_array(): void {
@@ -96,9 +94,7 @@ class ResourceTest extends WP_UnitTestCase {
 
 		$actual = ob_get_clean();
 
-		$this->assertNotFalse( stripos( $actual, "rel='$directive'" ) );
-		$this->assertNotFalse( stripos( $actual, "href='{$resource['href']}" ) );
-		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}'" ) );
-		$this->assertNotFalse( stripos( $actual, "type='{$resource['type']}'" ) );
+		$this->assertNotFalse( stripos( $actual, "rel='$directive' href='{$resource['href']}" ) );
+		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}'/>" ) );
 	}
 }
