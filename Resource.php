@@ -9,110 +9,59 @@
 
 namespace ThemePlate;
 
+use ThemePlate\Resource\Handler;
+use ThemePlate\Resource\Item;
+
 class Resource {
 
-	private static array $handles = array();
-	private static array $storage = array(
-		'handles'   => array(),
-		'resources' => array(),
-	);
+	private static array $storage = array();
+
+	private static Handler $handler;
 
 
 	public static function hint( string $directive, $resource ): void {
 
-		$type = in_array( $directive, array( 'prefetch', 'preload' ), true ) ? 'handles' : 'resources';
-
-		self::$storage[ $type ][ $directive ][] = $resource;
+		self::$storage[ $directive ][] = $resource;
 
 	}
 
 
 	public static function action(): void {
 
-		self::prepare();
+		self::$handler = new Handler();
 
-		foreach ( self::$storage['resources'] as $directive => $resources ) {
+		self::$handler->init();
+
+		foreach ( self::$storage as $directive => $resources ) {
 			foreach ( $resources as $resource ) {
-				$item = array(
-					'rel'  => $directive,
-					'href' => $resource,
-				);
-
-				self::insert( $item );
-			}
-		}
-
-		foreach ( self::$storage['handles'] as $directive => $handles ) {
-			foreach ( $handles as $handle ) {
-				if ( self::check( $handle ) ) {
-					continue;
+				if ( ! is_array( $resource ) ) {
+					self::handle( $resource, $directive );
+				} else {
+					( new Item( $resource['href'], $directive ) )->extra( $resource )->tag();
 				}
-
-				$item = array( 'rel' => $directive ) + $handle;
-
-				self::insert( $item );
 			}
 		}
+
+		self::$handler->action();
 
 	}
 
 
-	private static function prepare(): void {
+	private static function handle( string $resource, string $directive ): void {
 
-		global $wp_scripts, $wp_styles;
+		$type = 'url';
 
-		foreach ( array( $wp_scripts, $wp_styles ) as $dependencies ) {
-			if ( empty( $dependencies->queue ) || empty( $dependencies->registered ) ) {
-				continue;
-			}
-
-			$type = get_class( $dependencies );
-
-			foreach ( $dependencies->registered as $dependency ) {
-				self::$handles[ $dependency->handle ] = array(
-					'href' => $dependency->src,
-					'as'   => strtolower( substr( $type, 3, -1 ) ),
-				);
-			}
+		if ( wp_script_is( $resource ) ) {
+			$type = 'script';
+		} elseif ( wp_style_is( $resource ) ) {
+			$type = 'style';
 		}
 
-	}
-
-
-	private static function check( &$handle ): bool {
-
-		$retval = false;
-
-		if ( ! is_array( $handle ) ) {
-			$handle = self::$handles[ $handle ] ?? array();
+		if ( 'url' === $type ) {
+			( new Item( $resource, $directive ) )->tag();
+		} else {
+			self::$handler->{$type}( $resource, $directive );
 		}
-
-		if ( empty( $handle ) ) {
-			$retval = true;
-		}
-
-		return $retval;
-
-	}
-
-
-	private static function insert( array $item ): void {
-
-		$html = '';
-
-		foreach ( $item as $attr => $value ) {
-			$value = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
-
-			if ( ! is_string( $attr ) ) {
-				$html .= " $value";
-			} else {
-				$html .= " $attr='$value'";
-			}
-		}
-
-		$html = trim( $html );
-
-		echo "<link $html />\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
 

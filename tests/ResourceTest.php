@@ -16,17 +16,8 @@ class ResourceTest extends WP_UnitTestCase {
 
 		Utils::set_inaccessible_property(
 			new Resource(),
-			'handles',
-			array()
-		);
-
-		Utils::set_inaccessible_property(
-			new Resource(),
 			'storage',
-			array(
-				'handles'   => array(),
-				'resources' => array(),
-			)
+			array()
 		);
 	}
 
