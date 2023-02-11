@@ -25,11 +25,11 @@ class ResourceTest extends WP_UnitTestCase {
 		return array(
 			array(
 				'dns-prefetch',
-				'cdnjs.cloudflare.com',
+				'//cdnjs.cloudflare.com',
 			),
 			array(
 				'preconnect',
-				'ajax.cloudflare.com',
+				'//ajax.cloudflare.com',
 			),
 			array(
 				'prerender',

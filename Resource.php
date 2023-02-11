@@ -58,6 +58,12 @@ class Resource {
 		}
 
 		if ( 'url' === $type ) {
+			$parsed = wp_parse_url( $resource );
+
+			if ( empty( $parsed['host'] ) ) {
+				return;
+			}
+
 			( new Item( $resource, $directive ) )->tag();
 		} else {
 			self::$handler->{$type}( $resource, $directive );
