@@ -9,14 +9,8 @@
 
 namespace ThemePlate\Resource;
 
-use WP_Dependencies;
-
 class Handler {
 
-	private array $storage = array(
-		'script' => array(),
-		'style'  => array(),
-	);
 	private array $scripts = array();
 	private array $styles  = array();
 
@@ -37,21 +31,7 @@ class Handler {
 
 	public function init(): void {
 
-		global $wp_scripts, $wp_styles;
-
-		/** @var WP_Dependencies $dependencies */
-		foreach ( array( $wp_scripts, $wp_styles ) as $dependencies ) {
-			if ( empty( $dependencies->queue ) || empty( $dependencies->registered ) ) {
-				continue;
-			}
-
-			$type = get_class( $dependencies );
-			$type = strtolower( substr( $type, 3, -1 ) );
-
-			foreach ( $dependencies->registered as $dependency ) {
-				$this->storage[ $type ][ $dependency->handle ] = $dependency->src;
-			}
-		}
+		_deprecated_function( __METHOD__, '2.1.0' );
 
 	}
 

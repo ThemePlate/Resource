@@ -30,8 +30,6 @@ class Resource {
 
 		self::$handler = new Handler();
 
-		self::$handler->init();
-
 		foreach ( self::$storage as $directive => $resources ) {
 			foreach ( $resources as $resource ) {
 				if ( ! is_array( $resource ) ) {
