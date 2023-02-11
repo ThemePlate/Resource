@@ -87,6 +87,21 @@ class ResourceTest extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * @dataProvider for_hint_with_known_handle
+	 */
+	public function test_hint_with_known_but_irrelevant_handle( string $directive, string $handle ): void {
+		Resource::hint( $directive, $handle );
+		wp_enqueue_script( $handle );
+		wp_deregister_script( $handle );
+		ob_start();
+		Resource::action();
+
+		$actual = ob_get_clean();
+
+		$this->assertFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
+	}
+
 	public function test_hint_with_custom_array(): void {
 		$directive = 'preload';
 		$resource  = array(

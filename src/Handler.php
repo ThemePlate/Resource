@@ -60,7 +60,9 @@ class Handler {
 
 		foreach ( array( 'script', 'style' ) as $type ) {
 			foreach ( $this->{$type . 's'} as $handle => $directive ) {
-				if ( array_key_exists( $handle, $this->storage[ $type ] ) ) {
+				$enqueued = 'script' === $type ? wp_script_is( $handle ) : wp_style_is( $handle );
+
+				if ( array_key_exists( $handle, $this->storage[ $type ] ) && $enqueued ) {
 					( new Item( $this->storage[ $type ][ $handle ], $directive ) )
 						->extra(
 							array(
