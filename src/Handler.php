@@ -62,8 +62,14 @@ class Handler {
 			foreach ( $this->{$type . 's'} as $handle => $directive ) {
 				$enqueued = 'script' === $type ? wp_script_is( $handle ) : wp_style_is( $handle );
 
-				if ( array_key_exists( $handle, $this->storage[ $type ] ) && $enqueued ) {
-					( new Item( $this->storage[ $type ][ $handle ], $directive ) )
+				if ( ! $enqueued ) {
+					continue;
+				}
+
+				$source = 'script' === $type ? Helper::get_script_src( $handle ) : Helper::get_style_src( $handle );
+
+				if ( $source ) {
+					( new Item( $source, $directive ) )
 						->extra(
 							array(
 								'as' => in_array( $directive, array( 'preload', 'prefetch' ), true ) ? $type : '',
