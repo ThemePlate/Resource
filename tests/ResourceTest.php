@@ -49,7 +49,7 @@ class ResourceTest extends WP_UnitTestCase {
 		$actual   = ob_get_clean();
 		$resource = esc_url( $resource );
 
-		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='$resource'/>" ) );
+		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='$resource' />" ) );
 	}
 
 	public function for_hint_with_known_handle(): array {
@@ -83,7 +83,7 @@ class ResourceTest extends WP_UnitTestCase {
 		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
 
 		if ( in_array( $directive, array( 'preload', 'prefetch' ), true ) ) {
-			$this->assertNotFalse( stripos( $actual, "as='script'/>" ) );
+			$this->assertNotFalse( stripos( $actual, "as='script' />" ) );
 		}
 	}
 
@@ -117,6 +117,6 @@ class ResourceTest extends WP_UnitTestCase {
 		$actual = ob_get_clean();
 
 		$this->assertNotFalse( stripos( $actual, "rel='$directive' href='{$resource['href']}" ) );
-		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}'/>" ) );
+		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}' />" ) );
 	}
 }

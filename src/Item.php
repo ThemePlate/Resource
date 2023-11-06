@@ -47,7 +47,7 @@ class Item {
 	public function tag(): void {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo "<link{$this->stringify( $this->attributes )}/>" . PHP_EOL;
+		echo "<link {$this->stringify( $this->attributes )} />" . PHP_EOL;
 
 	}
 
@@ -66,7 +66,7 @@ class Item {
 			}
 		}
 
-		return $string;
+		return trim( $string );
 
 	}
 
