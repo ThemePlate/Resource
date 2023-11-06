@@ -36,11 +36,11 @@ class Handler {
 	}
 
 
-	public function action(): void {
+	public function action( string $status = 'enqueued' ): void {
 
 		foreach ( array( 'script', 'style' ) as $type ) {
 			foreach ( $this->{$type . 's'} as $handle => $directive ) {
-				$enqueued = 'script' === $type ? wp_script_is( $handle ) : wp_style_is( $handle );
+				$enqueued = 'script' === $type ? wp_script_is( $handle, $status ) : wp_style_is( $handle, $status );
 
 				if ( ! $enqueued ) {
 					continue;
