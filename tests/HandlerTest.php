@@ -65,4 +65,20 @@ class HandlerTest extends WP_UnitTestCase {
 			$this->assertSame( $this->expect, $actual );
 		}
 	}
+
+	public function test_with_extra(): void {
+		wp_enqueue_script( 'script', $this->asset_src );
+		$this->handler->script(
+			'script',
+			$this->directive,
+			array(
+				'crossorigin' => 'anonymous',
+			)
+		);
+
+		$expect = str_replace( '/>', "crossorigin='anonymous' />", $this->expect );
+		$actual = $this->get_result();
+
+		$this->assertSame( $expect, $actual );
+	}
 }

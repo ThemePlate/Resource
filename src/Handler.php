@@ -15,16 +15,16 @@ class Handler {
 	private array $styles  = array();
 
 
-	public function script( string $handle, string $directive ): void {
+	public function script( string $handle, string $directive, array $extra = array() ): void {
 
-		$this->scripts[ $handle ] = $directive;
+		$this->scripts[ $handle ] = compact( 'directive', 'extra' );
 
 	}
 
 
-	public function style( string $handle, string $directive ): void {
+	public function style( string $handle, string $directive, array $extra = array() ): void {
 
-		$this->styles[ $handle ] = $directive;
+		$this->styles[ $handle ] = compact( 'directive', 'extra' );
 
 	}
 
@@ -43,7 +43,7 @@ class Handler {
 		}
 
 		foreach ( array( 'script', 'style' ) as $type ) {
-			foreach ( $this->{$type . 's'} as $handle => $directive ) {
+			foreach ( $this->{$type . 's'} as $handle => $attributes ) {
 				$enqueued = 'script' === $type ? wp_script_is( $handle, $status ) : wp_style_is( $handle, $status );
 
 				if ( ! $enqueued ) {
@@ -53,12 +53,13 @@ class Handler {
 				$source = 'script' === $type ? Helper::get_script_src( $handle ) : Helper::get_style_src( $handle );
 
 				if ( $source ) {
-					( new Item( $source, $directive ) )
-						->extra(
+					( new Item( $source, $attributes['directive'] ) )
+						->extra( array_merge(
+							$attributes['extra'],
 							array(
-								'as' => in_array( $directive, array( 'preload', 'prefetch' ), true ) ? $type : '',
-							)
-						)
+								'as' => in_array( $attributes['directive'], array( 'preload', 'prefetch' ), true ) ? $type : '',
+							),
+						) )
 						->tag();
 				}
 			}
