@@ -119,4 +119,16 @@ class ResourceTest extends WP_UnitTestCase {
 		$this->assertNotFalse( stripos( $actual, "rel='$directive' href='{$resource['href']}" ) );
 		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}' />" ) );
 	}
+
+	public function test_hint_with_extra_attributes() {
+		$directive = 'preload';
+		$handle    = 'dashicons';
+		$actual    = "<link rel='$directive' href='/wp-includes/css/$handle.min.css' as='style' crossorigin='anonymous' />";
+
+		Resource::hint( $directive, $handle, array( 'crossorigin' => 'anonymous' ) );
+		wp_enqueue_style( $handle );
+		ob_start();
+		Resource::action();
+		$this->assertSame( trim( ob_get_clean() ), $actual );
+	}
 }

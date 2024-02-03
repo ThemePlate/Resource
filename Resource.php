@@ -19,9 +19,9 @@ class Resource {
 	private static Handler $handler;
 
 
-	public static function hint( string $directive, $resource ): void {
+	public static function hint( string $directive, $resource, array $extra = array() ): void {
 
-		self::$storage[ $directive ][] = $resource;
+		self::$storage[ $directive ][] = compact( 'resource', 'extra' );
 
 	}
 
@@ -30,12 +30,13 @@ class Resource {
 
 		self::$handler = new Handler();
 
-		foreach ( self::$storage as $directive => $resources ) {
-			foreach ( $resources as $resource ) {
-				if ( ! is_array( $resource ) ) {
-					self::handle( $resource, $directive );
+		foreach ( self::$storage as $directive => $values ) {
+			foreach ( $values as $value ) {
+				if ( ! is_array( $value['resource'] ) ) {
+					self::handle( $value['resource'], $directive, $value['extra'] );
 				} else {
-					( new Item( $resource['href'], $directive ) )->extra( $resource )->tag();
+					( new Item( $value['resource']['href'], $directive ) )
+						->extra( array_merge( $value['resource'], $value['extra'] ) )->tag();
 				}
 			}
 		}
@@ -45,7 +46,7 @@ class Resource {
 	}
 
 
-	private static function handle( string $resource, string $directive ): void {
+	private static function handle( string $resource, string $directive, array $attributes ): void {
 
 		$type = 'url';
 
@@ -62,9 +63,9 @@ class Resource {
 				return;
 			}
 
-			( new Item( $resource, $directive ) )->tag();
+			( new Item( $resource, $directive ) )->extra( $attributes )->tag();
 		} else {
-			self::$handler->{$type}( $resource, $directive );
+			self::$handler->{$type}( $resource, $directive, $attributes );
 		}
 
 	}
