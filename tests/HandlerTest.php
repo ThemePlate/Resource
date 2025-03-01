@@ -67,7 +67,7 @@ class HandlerTest extends WP_UnitTestCase {
 	}
 
 	public function test_with_extra(): void {
-		wp_enqueue_script( 'script', $this->asset_src );
+		wp_enqueue_script( 'script', $this->asset_src, array(), (string) time(), array( 'in_footer' => true ) );
 		$this->handler->script(
 			'script',
 			$this->directive,
