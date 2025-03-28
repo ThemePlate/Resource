@@ -120,7 +120,7 @@ class ResourceTest extends WP_UnitTestCase {
 		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}' />" ) );
 	}
 
-	public function test_hint_with_extra_attributes() {
+	public function test_hint_with_extra_attributes(): void {
 		$directive = 'preload';
 		$handle    = 'dashicons';
 		$actual    = "<link rel='$directive' href='/wp-includes/css/$handle.min.css' as='style' crossorigin='anonymous' />";
