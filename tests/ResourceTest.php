@@ -46,7 +46,7 @@ class ResourceTest extends WP_UnitTestCase {
 		ob_start();
 		Resource::action();
 
-		$actual   = ob_get_clean();
+		$actual   = (string) ob_get_clean();
 		$resource = esc_url( $resource );
 
 		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='$resource' />" ) );
@@ -78,7 +78,7 @@ class ResourceTest extends WP_UnitTestCase {
 		ob_start();
 		Resource::action();
 
-		$actual = ob_get_clean();
+		$actual = (string) ob_get_clean();
 
 		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
 
@@ -97,7 +97,7 @@ class ResourceTest extends WP_UnitTestCase {
 		ob_start();
 		Resource::action();
 
-		$actual = ob_get_clean();
+		$actual = (string) ob_get_clean();
 
 		$this->assertFalse( stripos( $actual, "<link rel='$directive' href='/wp-includes/js/jquery/" ) );
 	}
@@ -114,7 +114,7 @@ class ResourceTest extends WP_UnitTestCase {
 		ob_start();
 		Resource::action();
 
-		$actual = ob_get_clean();
+		$actual = (string) ob_get_clean();
 
 		$this->assertNotFalse( stripos( $actual, "rel='$directive' href='{$resource['href']}" ) );
 		$this->assertNotFalse( stripos( $actual, "as='{$resource['as']}' type='{$resource['type']}' />" ) );
@@ -129,6 +129,6 @@ class ResourceTest extends WP_UnitTestCase {
 		wp_enqueue_style( $handle );
 		ob_start();
 		Resource::action();
-		$this->assertSame( trim( ob_get_clean() ), $actual );
+		$this->assertSame( trim( (string) ob_get_clean() ), $actual );
 	}
 }

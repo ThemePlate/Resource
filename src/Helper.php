@@ -32,7 +32,7 @@ class Helper {
 		$dependency = $dependencies->query( $handle );
 
 		if ( $dependency ) {
-			return $dependency->src;
+			return (string) $dependency->src;
 		}
 
 		return '';

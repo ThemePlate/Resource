@@ -10,7 +10,7 @@ class ItemTest extends WP_UnitTestCase {
 		ob_start();
 		$item->tag();
 
-		return trim( ob_get_clean() );
+		return trim( (string) ob_get_clean() );
 	}
 
 	public function test_with_simple_resource(): void {

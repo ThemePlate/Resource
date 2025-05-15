@@ -22,7 +22,7 @@ class HandlerTest extends WP_UnitTestCase {
 		ob_start();
 		$this->handler->action( $status );
 
-		return trim( ob_get_clean() );
+		return trim( (string) ob_get_clean() );
 	}
 
 	public function for_action_status(): array {
