@@ -9,6 +9,7 @@
 
 namespace ThemePlate\Resource;
 
+use _WP_Dependency;
 use WP_Dependencies;
 
 class Helper {
@@ -31,7 +32,7 @@ class Helper {
 
 		$dependency = $dependencies->query( $handle );
 
-		if ( $dependency ) {
+		if ( $dependency instanceof _WP_Dependency ) {
 			return (string) $dependency->src;
 		}
 
