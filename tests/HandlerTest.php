@@ -55,6 +55,7 @@ class HandlerTest extends WP_UnitTestCase {
 	 * @dataProvider for_action_status
 	 */
 	public function test_action_status( string $function, string $status, bool $blank ): void {
+		/** @var callable-string $function */
 		$function( 'script', $this->asset_src );
 		$this->handler->script( 'script', $this->directive );
 
