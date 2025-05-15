@@ -14,11 +14,24 @@ use ThemePlate\Resource\Item;
 
 class Resource {
 
+	/**
+	 * @var array<
+	 *   string,
+	 *   array{
+	 *     resource: string|array<string, string>,
+	 *     extra: array<string, string>
+	 *   }[]
+	 * >
+	 */
 	private static array $storage = array();
 
 	private static Handler $handler;
 
 
+	/**
+	 * @param string|array<string, string> $resource
+	 * @param string[] $extra
+	 */
 	public static function hint( string $directive, $resource, array $extra = array() ): void {
 
 		self::$storage[ $directive ][] = compact( 'resource', 'extra' );
@@ -46,6 +59,7 @@ class Resource {
 	}
 
 
+	/** @param array<string, string> $attributes */
 	private static function handle( string $resource, string $directive, array $attributes ): void {
 
 		$type = 'url';

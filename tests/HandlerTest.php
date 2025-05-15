@@ -25,6 +25,7 @@ class HandlerTest extends WP_UnitTestCase {
 		return trim( (string) ob_get_clean() );
 	}
 
+	/** @return array<int, array{string, string, bool}> */
 	public function for_action_status(): array {
 		return array(
 			array(

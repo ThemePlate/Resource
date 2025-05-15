@@ -21,6 +21,7 @@ class ResourceTest extends WP_UnitTestCase {
 		);
 	}
 
+	/** @return array<int, array{string, string}> */
 	public function for_hint_with_string_resource(): array {
 		return array(
 			array(
@@ -52,6 +53,7 @@ class ResourceTest extends WP_UnitTestCase {
 		$this->assertNotFalse( stripos( $actual, "<link rel='$directive' href='$resource' />" ) );
 	}
 
+	/** @return array<int, array{string, string}> */
 	public function for_hint_with_known_handle(): array {
 		return array(
 			array(
